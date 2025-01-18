@@ -6,9 +6,12 @@ namespace LuciferGamingStudio.InventorySystem
     public class ItemSO : ScriptableObject
     {
         public ItemType itemType;
+        public int itemID;
         public string itemName;
-        public Sprite itemIcon;
+        public int itemAmountInInventory;
         public float purchasePrice;
         public float sellPrice;
+        public Sprite itemIcon;
+        public GameObject itemPrefab;
     }
 }

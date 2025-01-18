@@ -47,6 +47,10 @@ namespace LuciferGamingStudio
         [Tooltip("How far in degrees can you move the camera down")]
         public float BottomClamp = -90.0f;
 
+        [Header("Interaction")]
+        public float InteractDistance = 1.5f;
+
+
         // cinemachine
         private float _cinemachineTargetPitch;
 
@@ -60,6 +64,8 @@ namespace LuciferGamingStudio
         private float _jumpTimeoutDelta;
         private float _fallTimeoutDelta;
 
+        // Interaction
+        private Interactable _interactableObjectInFocus;
 
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput _playerInput;
@@ -110,6 +116,7 @@ namespace LuciferGamingStudio
             JumpAndGravity();
             GroundedCheck();
             Move();
+            Interact();
         }
 
         private void LateUpdate()
@@ -191,6 +198,29 @@ namespace LuciferGamingStudio
 
             // move the player
             _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+        }
+
+        private void Interact()
+        {
+            if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward, out RaycastHit hit, InteractDistance))
+            {
+                if (hit.collider.TryGetComponent<Interactable>(out Interactable interactable))
+                {
+                    if (interactable != _interactableObjectInFocus)
+                        _interactableObjectInFocus?.SetFocus(false);
+
+                    _interactableObjectInFocus = interactable;
+                    _interactableObjectInFocus.SetFocus(true);
+
+                    if (_input.interact)
+                        interactable.Interact();
+                }
+            }
+            else
+                _interactableObjectInFocus?.SetFocus(false);
+
+            // reset interact input
+            _input.interact = false;
         }
 
         private void JumpAndGravity()

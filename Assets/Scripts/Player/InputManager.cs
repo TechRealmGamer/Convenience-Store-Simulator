@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -7,10 +8,16 @@ namespace LuciferGamingStudio
 {
     public class InputManager : MonoBehaviour
     {
+        public static InputManager Instance;
+
+        [Header("Input Manager")]
+        public bool canMove = true;
+
         [Header("Character Input Values")]
         public Vector2 move;
         public Vector2 look;
         public bool sprint;
+        public bool interact;
 
         [Header("Movement Settings")]
         public bool analogMovement;
@@ -19,23 +26,36 @@ namespace LuciferGamingStudio
         public bool cursorLocked = true;
         public bool cursorInputForLook = true;
 
+        private void Awake()
+        {
+            Instance = this;
+        }
+
 #if ENABLE_INPUT_SYSTEM
         public void OnMove(InputValue value)
         {
-            MoveInput(value.Get<Vector2>());
+            if (canMove)
+                MoveInput(value.Get<Vector2>());
+            else
+                move = Vector2.zero;
         }
 
         public void OnLook(InputValue value)
         {
-            if (cursorInputForLook)
-            {
+            if (cursorInputForLook && canMove)
                 LookInput(value.Get<Vector2>());
-            }
+            else
+                look = Vector2.zero;
         }
 
         public void OnSprint(InputValue value)
         {
             SprintInput(value.isPressed);
+        }
+
+        public void OnInteract(InputValue value)
+        {
+            interact = value.isPressed;
         }
 #endif
 
@@ -60,7 +80,7 @@ namespace LuciferGamingStudio
             SetCursorState(cursorLocked);
         }
 
-        private void SetCursorState(bool newState)
+        public void SetCursorState(bool newState)
         {
             Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
         }
