@@ -12,6 +12,7 @@ namespace LuciferGamingStudio
 
         [Header("Input Manager")]
         public bool canMove = true;
+        public bool CanMove { get; set; }
 
         [Header("Character Input Values")]
         public Vector2 move;
@@ -83,6 +84,11 @@ namespace LuciferGamingStudio
         public void SetCursorState(bool newState)
         {
             Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+        }
+
+        public void SetCanMove(bool canMove)
+        {
+            this.canMove = canMove;
         }
     }
 

@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - CinemachineTarget
+  - Car
+  - Customer
   layers:
   - Default
   - TransparentFX
@@ -15,9 +17,9 @@ TagManager:
   - Outline
   - Player
   - Item
-  - 
-  - 
-  - 
+  - Car
+  - Customer
+  - Gas Pump
   - 
   - 
   - 
