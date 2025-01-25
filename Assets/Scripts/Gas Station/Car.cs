@@ -4,7 +4,6 @@ using UnityEngine.AI;
 [DefaultExecutionOrder(2)]
 public class Car : MonoBehaviour
 {
-    public bool isComingToGasStation;
     public bool isPaying;
 
     [Header("Paying for Gas")]
@@ -24,7 +23,6 @@ public class Car : MonoBehaviour
     private void OnEnable()
     {
         waitingArea = GameManager.Instance.GasStation.waitingArea;
-        SetNewDestination(waitingArea.transform.position);
     }
 
     private void OnTriggerEnter(Collider other)

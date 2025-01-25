@@ -16,12 +16,6 @@ public class FuelPump : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.tag == "Car")
-            isOccupied = false;
-    }
-
     public void RequestFuel()
     {
         int randomX = Random.Range(1, 10);
